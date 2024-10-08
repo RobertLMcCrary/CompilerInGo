@@ -1,0 +1,78 @@
+
+
+Lexical Analysis (Lexer/Tokenizer)
+  - purpose: breaks down source code into tokens
+  - input: raw source code
+  - output: a stream of tokens (keywords, variables, operators, etc.)
+  - example: int a = 5;
+  - stream tokens would be "int" "a" "=" "5" ";"
+
+
+Syntax analysis (Parser)
+  - purpose: ensures that the token stream follows the rules of the programming languages grammar
+  - input: stream of tokens
+  - output: an Abstract Syntax Tree (AST)
+  - what it does: checks for correct syntax and builds a tree-like structure (AST) that represents the hierchical
+    structure of the code
+    - the AST captures the grammatical relationships between tokens
+    - example: a = b + 2 the parser would structure this as an assignment with b + 2 on the right-hand side
+
+
+Semantic Analysis
+  - purpose: ensures that the code makes sense beyond just correct syntax (semantic correctness)
+  - input: Abstract Syntax Tree (AST)
+  - output: Decorated AST or an intermediate representation with semantic information
+  - what is does: checks for semantic errors, such as type mismatches, undeclared variables, etc. 
+  - For example, it might check that a variable is declared before being used, or that a function 
+    is called with the correct types of arguments.
+
+
+Intermediate Representation (IR) Generation
+  - Purpose: Converts the AST into an Intermediate Representation (IR) that is more suitable for optimization
+    and target-specific code generation
+  - input: AST or decorated AST
+  - output: intermediate representation
+  - What it does: The IR is a simplified, lower-level version of the source code, which abstracts
+    away machine-specific details. This allows for optimization passes that can make the code more 
+    efficient before translating to the final machine code
+
+
+Optimization
+  - Purpose: Makes the code more efficient in terms of speed, memory usage, or other criteria
+  - input: intermediate Representation
+  - output: optimized intermediate representation
+  - What it does: The compiler applies optimization techniques such as dead code elimination
+    (removing unreachable code), constant folding (precomputing constant expressions), inlining 
+    (replacing function calls with the function body), etc
+
+
+Code Generation
+  - Purpose: Converts the optimized intermediate representation into machine code or assembly 
+    language for the target hardware
+  - Input: Optimized intermediate representation
+  - Output: Target-specific machine code or assembly code
+  - What it does: It generates instructions that the CPU of the target machine can execute. 
+    This step may involve platform-specific decisions, like how to allocate registers and 
+    how to handle calling conventions
+
+
+Code Linking and Assembly
+  - purpose: combines object files into an executable
+  - input: machine code (object files)
+  - output: final executable or library
+  - What it does: The linking phase resolves addresses for functions and variables, ties together 
+    code from different modules, and produces the final executable. This step can also involve 
+    linking external libraries that the program depends on
+
+----------------------------------------------------------------------------------------------------
+
+1. Lexical Analysis (Tokenizer/Lexer) – Converts raw code to tokens.
+2. Syntax Analysis (Parser) – Converts tokens into an Abstract Syntax Tree (AST).
+3. Semantic Analysis – Ensures the code has meaningful constructs.
+4. Intermediate Representation (IR) Generation – Converts AST to IR for easier manipulation.
+5. Optimization – Improves the efficiency of the code.
+6. Code Generation – Translates optimized IR into machine code.
+7. Linking and Assembly – Produces the final executable by combining object files.
+
+
+
