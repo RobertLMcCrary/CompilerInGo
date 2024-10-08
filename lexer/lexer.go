@@ -32,61 +32,27 @@ func (l *Lexer) NextToken() token.Token {
 
 	l.skipWhitespace()
 
+	if tok = l.delimiter(); tok.Type != token.ILLEGAL {
+		l.readChar()
+		return tok
+	}
+
+	if tok = l.mathOperator(); tok.Type != token.ILLEGAL {
+		l.readChar()
+		return tok
+	}
+
+	if tok = l.relationalOperator(); tok.Type != token.ILLEGAL {
+		l.readChar()
+		return tok
+	}
+
+	if tok = l.logicalOperator(); tok.Type != token.ILLEGAL {
+		l.readChar()
+		return tok
+	}
+
 	switch l.ch {
-	case '=':
-		if l.peekChar() == '=' {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.EQ, Literal: string(ch) + string(l.ch)}
-		} else {
-			tok = newToken(token.ASSIGN, l.ch)
-		}
-
-	case ';':
-		tok = newToken(token.SEMICOLON, l.ch)
-
-	case '(':
-		tok = newToken(token.LPAREN, l.ch)
-
-	case ')':
-		tok = newToken(token.RPAREN, l.ch)
-
-	case ',':
-		tok = newToken(token.COMMA, l.ch)
-
-	case '+':
-		tok = newToken(token.PLUS, l.ch)
-
-	case '{':
-		tok = newToken(token.LBRACE, l.ch)
-
-	case '}':
-		tok = newToken(token.RBRACE, l.ch)
-
-	case '-':
-		tok = newToken(token.MINUS, l.ch)
-
-	case '!':
-		if l.peekChar() == '=' {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.NOT_EQ, Literal: string(ch) + string(l.ch)}
-		} else {
-			tok = newToken(token.BANG, l.ch)
-		}
-
-	case '/':
-		tok = newToken(token.SLASH, l.ch)
-
-	case '*':
-		tok = newToken(token.ASTERISK, l.ch)
-
-	case '<':
-		tok = newToken(token.LT, l.ch)
-
-	case '>':
-		tok = newToken(token.GT, l.ch)
-
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
@@ -107,6 +73,80 @@ func (l *Lexer) NextToken() token.Token {
 
 	l.readChar()
 	return tok
+}
+
+func (l *Lexer) delimiter() token.Token {
+	delimiters := map[byte]token.TokenType{
+		';': token.SEMICOLON,
+		',': token.COMMA,
+		'(': token.LPAREN,
+		')': token.RPAREN,
+		'{': token.LBRACE,
+		'}': token.RBRACE,
+		'[': token.LBRACKET,
+		']': token.RBRACKET,
+	}
+
+	if tokType, ok := delimiters[l.ch]; ok {
+		return newToken(tokType, l.ch)
+	}
+	return newToken(token.ILLEGAL, l.ch)
+}
+
+func (l *Lexer) mathOperator() token.Token {
+	mathOperators := map[byte]token.TokenType{
+		'+': token.PLUS,
+		'-': token.MINUS,
+		'*': token.ASTERISK,
+		'/': token.SLASH,
+	}
+
+	if tokType, ok := mathOperators[l.ch]; ok {
+		return newToken(tokType, l.ch)
+	}
+
+	return newToken(token.ILLEGAL, l.ch)
+}
+
+func (l *Lexer) relationalOperator() token.Token {
+	var tok token.Token
+
+	switch l.ch {
+	case '=':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.ASSIGN, l.ch)
+		}
+
+	case '!':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.NOT_EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.BANG, l.ch)
+		}
+
+	case '<':
+		tok = newToken(token.LT, l.ch)
+
+	case '>':
+		tok = newToken(token.GT, l.ch)
+
+	default:
+		tok = newToken(token.ILLEGAL, l.ch)
+	}
+	return tok
+}
+
+func (l *Lexer) logicalOperator() token.Token {
+	if l.ch == '!' && l.peekChar() != '=' {
+		return newToken(token.BANG, l.ch)
+	}
+	return newToken(token.ILLEGAL, l.ch)
 }
 
 func (l *Lexer) peekChar() byte {
