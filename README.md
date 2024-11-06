@@ -4,7 +4,8 @@ This project implements a compiler for the Monkey programming language, written 
 
 # Book
 "Writing An Interpreter In Go" By Thorsten Ball
-
+[Free PDF](https://edu.anarcho-copy.org/Programming%20Languages/Go/writing%20an%20INTERPRETER%20in%20go.pdf)
+[Amazon Link](https://www.amazon.com/Writing-Interpreter-Go-Thorsten-Ball/dp/3982016118)
 
 ## Components
 
