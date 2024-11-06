@@ -2,6 +2,10 @@
 
 This project implements a compiler for the Monkey programming language, written in Go. The Monkey language is a simple, interpreted programming language designed for educational purposes.
 
+#Book
+"Writing An Interpreter In Go" By Thorsten Ball
+
+
 ## Components
 
 ### 1. Main (main.go)
