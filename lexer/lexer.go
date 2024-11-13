@@ -35,6 +35,8 @@ func (l *Lexer) NextToken() token.Token {
 
 	l.skipWhitespace()
 
+	//TODO switch statement
+
 	if tok = l.delimiter(); tok.Type != token.ILLEGAL {
 		l.readChar()
 		return tok
